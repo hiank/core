@@ -33,7 +33,7 @@ func DuplicateDir(src string, dst string) {
 			os.MkdirAll(dirName, 0755)
 		}
 
-		rName := dst + (*name)[:len(src)]
+		rName := dst + (*name)[len(src):]
 		DuplicateFile(*name, rName)
 	}
 }
