@@ -23,9 +23,11 @@ type DirInfo struct {
 // NewDirInfo used create en object of DirInfo with root dir
 func NewDirInfo(root string, filter Filter) (*DirInfo, error) {
 
-	if !strings.HasSuffix(root, "/") {
-		root += "/"
-	}
+	// apart := string(os.PathSeparator)
+	// if !strings.HasSuffix(root, apart) {
+	// 	root += apart
+	// }
+	root = AddApart(root)
 
 	info := new(DirInfo)
 	*info = DirInfo{
@@ -59,9 +61,10 @@ func (info *DirInfo) FilesIn(dirName string) []*string {
 	// }
 	// flag := DirApartByte()
 
-	if b := []byte(dirName); b[len(b)-1] == os.PathSeparator {
-		dirName = dirName[:len(dirName)-1]
-	}
+	// if b := []byte(dirName); b[len(b)-1] == os.PathSeparator {
+	// 	dirName = dirName[:len(dirName)-1]
+	// }
+	dirName = TrimApart(dirName)
 	
 	arr := make([]*string, 0, 10)
 	dirLen, focus := len(dirName), false
@@ -97,7 +100,7 @@ func (info *DirInfo) handleWalk(path string, file os.FileInfo, err error) error 
 		return err
 	}
 
-	if strings.HasSuffix(path, "/") {
+	if strings.HasSuffix(path, string(os.PathSeparator)) {
 		return nil
 	}
 
