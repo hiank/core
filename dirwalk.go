@@ -54,16 +54,6 @@ func (info *DirInfo) FilesIn(dirName string) []*string {
 		dirName = info._root + dirName
 	}
 
-	// var flag byte
-	// switch runtime.GOOS {
-	// 	case "windows":	flag = '/'
-	// 	default:		flag = '\\'
-	// }
-	// flag := DirApartByte()
-
-	// if b := []byte(dirName); b[len(b)-1] == os.PathSeparator {
-	// 	dirName = dirName[:len(dirName)-1]
-	// }
 	dirName = TrimApart(dirName)
 	
 	arr := make([]*string, 0, 10)
@@ -83,12 +73,12 @@ func (info *DirInfo) FilesIn(dirName string) []*string {
 }
 
 // NextFile used to pop next file name
-func (info *DirInfo) NextFile() *string {
+func (info *DirInfo) NextFile() string {
 
-	var name *string
+	var name string
 	if info._focus < len(info._fileArr) {
 
-		name = &info._fileArr[info._focus]
+		name = info._fileArr[info._focus]
 		info._focus++
 	}
 	return name
@@ -109,19 +99,19 @@ func (info *DirInfo) handleWalk(path string, file os.FileInfo, err error) error 
 	case strings.HasPrefix(file.Name(), "."):
 	case file.IsDir():
 	default:
-		info.addFile(&path)
+		info.addFile(path)
 	}
 
 	return nil
 }
 
-func (info *DirInfo) addFile(path *string) {
+func (info *DirInfo) addFile(path string) {
 
-	if info._filter != nil && !info._filter.Match(path) {
+	if info._filter != nil && !info._filter.Match(&path) {
 		return
 	}
 
-	info._fileArr = append(info._fileArr, *path)
+	info._fileArr = append(info._fileArr, path)
 	// info._fileCnt++
 }
 

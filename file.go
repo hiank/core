@@ -2,7 +2,6 @@ package core
 
 import (
 	"io"
-	"strings"
 	"os"
 	"fmt"
 )
@@ -22,19 +21,12 @@ func DuplicateDir(src string, dst string) {
 	for {
 
 		name := d.NextFile()
-		if name == nil {
+		if name == "" {
 			break
 		}
 
-		idx := strings.LastIndexByte(*name, os.PathSeparator)
-		dirName := (*name)[:idx]
-		if _, e := os.Stat(dirName); e != nil {
-
-			os.MkdirAll(dirName, 0755)
-		}
-
-		rName := dst + (*name)[len(src):]
-		DuplicateFile(*name, rName)
+		rName := dst + name[len(src):]
+		DuplicateFile(name, rName)
 	}
 }
 
@@ -48,6 +40,7 @@ func DuplicateFile(lName string, rName string) {
 	}
 	defer src.Close()
 
+	MkPathDir(rName)
 	dst, err := os.OpenFile(rName, os.O_WRONLY|os.O_CREATE, 0644)
 	if err != nil {
 		fmt.Println("error open dstfile :" + err.Error())
@@ -57,3 +50,12 @@ func DuplicateFile(lName string, rName string) {
 	io.Copy(dst, src)
 }
 
+// MkPathDir used to make dir of path
+func MkPathDir(path string) {
+
+	dirName := ParentDir(path)
+	if _, e := os.Stat(dirName); e != nil {
+
+		os.MkdirAll(dirName, 0755)
+	}
+}

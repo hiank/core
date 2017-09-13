@@ -28,6 +28,19 @@ func AddApart(path string) string {
 	return path + apart
 }
 
+// ParentDir used to get parent dir string
+func ParentDir(path string) string {
+
+	path = TrimApart(path)
+
+	idx := strings.LastIndexByte(path, os.PathSeparator)
+	if idx == -1 {
+		return ""
+	}
+
+	return path[:idx]
+}
+
 // RandBytes 用于生成一组随机字，字母及数字
 func RandBytes(num int) []byte {
 
