@@ -18,7 +18,7 @@ func DuplicateDir(src string, dst string) {
 		return
 	}
 
-	dirLen := len(src)
+	dirLen := len(d.RootPath())
 	for {
 
 		name := d.NextFile()
