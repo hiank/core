@@ -78,6 +78,12 @@ func (info *DirInfo) FilesIn(dirName string) []*string {
 	return arr
 }
 
+// RootPath return the root path for DirInfo
+func (info *DirInfo) RootPath() string {
+
+	return info._root
+}
+
 // NextFile used to pop next file name
 func (info *DirInfo) NextFile() string {
 
