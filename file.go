@@ -18,6 +18,7 @@ func DuplicateDir(src string, dst string) {
 		return
 	}
 
+	dirLen := len(src)
 	for {
 
 		name := d.NextFile()
@@ -25,7 +26,7 @@ func DuplicateDir(src string, dst string) {
 			break
 		}
 
-		rName := dst + name[len(src):]
+		rName := dst + name[dirLen:]
 		DuplicateFile(name, rName)
 	}
 }

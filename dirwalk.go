@@ -27,6 +27,12 @@ func NewDirInfo(root string, filter Filter) (*DirInfo, error) {
 	// if !strings.HasSuffix(root, apart) {
 	// 	root += apart
 	// }
+	root, err := filepath.Abs(root)
+	if err != nil {
+
+		fmt.Println("filepath abs error :" + err.Error())
+		return nil, err
+	}
 	root = AddApart(root)
 
 	info := new(DirInfo)
@@ -37,7 +43,7 @@ func NewDirInfo(root string, filter Filter) (*DirInfo, error) {
 		_root: root,
 	}
 
-	err := filepath.Walk(root, info.handleWalk)
+	err = filepath.Walk(root, info.handleWalk)
 	if err != nil {
 
 		fmt.Println("there's an error in dict reset : " + err.Error())
